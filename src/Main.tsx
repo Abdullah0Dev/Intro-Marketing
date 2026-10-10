@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, Audio, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {AUDIO, Brand, G, SFX, ST, STAGE_LEN, TL, TOTAL, VO} from './theme';
-import {Bg, FONT, GradText, col, lerp, rw, sp} from './ui';
+import {Bg, FONT, col, lerp, rw, sp} from './ui';
 import {CtaScene, S1, S2, S3, S4, StageScene} from './scenes';
 
 const FadeWrap: React.FC<{d: number; children: React.ReactNode}> = ({d, children}) => {

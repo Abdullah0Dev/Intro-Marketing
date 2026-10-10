@@ -12,8 +12,10 @@ export const CATS = [
 ];
 const TOTAL_ITEMS = 1064;
 
-const Row: React.FC<{c: (typeof CATS)[number]; f: number; delay: number}> = ({c, f, delay}) => (
-  <div style={{...rw, alignItems: 'center', padding: '12px 16px', background: '#12112860', border: `1px solid ${Brand.cardBorder}`, borderRadius: 20, ...ent(f, delay, 10)}}>
+const Row: React.FC<{c: (typeof CATS)[number]; f: number; delay: number; hl?: number}> = ({c, f, delay, hl = -999}) => {
+  const p = lerp(f, hl, hl + 6, 0, 1) * lerp(f, hl + 12, hl + 22, 1, 0);
+  return (
+  <div style={{...rw, alignItems: 'center', padding: '12px 16px', background: '#12112860', border: `1px solid ${p > 0.05 ? Brand.glow : Brand.cardBorder}`, borderRadius: 20, boxShadow: `0 0 ${26 * p}px ${Brand.glow}`, ...ent(f, delay, 10), transform: `${ent(f, delay, 10).transform} scale(${1 + 0.035 * p})`}}>
     <div style={{width: 36, height: 36, borderRadius: 14, background: Brand.tileBackgroundAlt, ...col, alignItems: 'center', justifyContent: 'center', marginRight: 16}}>
       <CatIcon k={c.k} emoji={c.e} size={32} />
     </div>
@@ -23,7 +25,8 @@ const Row: React.FC<{c: (typeof CATS)[number]; f: number; delay: number}> = ({c,
     </div>
     <span style={{fontSize: 15, fontWeight: 500}}>{c.gb}</span>
   </div>
-);
+  );
+};
 
 const StatGlow = () => (
   <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(128deg, rgba(108,60,224,0) 0%, rgba(108,60,224,.08) 30%, rgba(108,60,224,.25) 50%, rgba(108,60,224,.08) 70%, rgba(108,60,224,0) 100%)', opacity: 0.9}} />
@@ -137,7 +140,7 @@ export const HomeScreen: React.FC<{count?: boolean; tapSeeAll?: number; tapRevie
           <span style={{fontSize: 20, fontWeight: 600}}>Categories</span>
           <span style={{fontSize: 15, fontWeight: 500, color: Brand.primary, padding: '4px 8px', background: f >= tapSeeAll && f < tapSeeAll + 14 ? Brand.tileBackground : 'transparent', borderRadius: 10}}>See All</span>
         </div>
-        <div style={{...col, gap: 6, flex: 1, overflow: 'hidden'}}>{CATS.map((c, i) => <Row key={c.k} c={c} f={f} delay={220 + i * 70} />)}</div>
+        <div style={{...col, gap: 6, flex: 1, overflow: 'hidden'}}>{CATS.map((c, i) => <Row key={c.k} c={c} f={f} delay={220 + i * 70} hl={count ? 90 + i * 13 : undefined} />)}</div>
         <div style={{marginTop: 'auto', paddingTop: 12, ...ent(f, 600)}}><GBtn title="Review Items" f={f} pressAt={tapReview} /></div>
       </div>
       {count ? (
@@ -204,6 +207,7 @@ export const DetailsScreen: React.FC<{selAt: number}> = ({selAt}) => {
   const sel = f >= selAt;
   const total = 286;
   const cnt = sel ? Math.round(total * lerp(f, selAt, selAt + 24, 0, 1, Easing.out(Easing.cubic))) : 0;
+  const crown = lerp(f, 92, 100, 0, 1) * lerp(f, 116, 128, 1, 0);
   return (
     <Page>
       <div style={{...col, position: 'absolute', inset: 0, padding: '59px 16px 0'}}>
@@ -222,8 +226,8 @@ export const DetailsScreen: React.FC<{selAt: number}> = ({selAt}) => {
                 const best = i === 0;
                 const on = sel && !best && f >= selAt + 4 + (g * 2 + i) * 2;
                 return (
-                  <div key={i} style={{position: 'relative', width: T, height: T, borderRadius: 8, overflow: 'hidden'}}>
-                    <Photo seed={g * 7 + 3} kind={best ? 'photo' : 'photo'} />
+                  <div key={i} style={{position: 'relative', width: T, height: T, borderRadius: 8, overflow: 'hidden', boxShadow: best ? `0 0 ${24 * crown}px #E8B84B, inset 0 0 0 ${3 * crown}px #E8B84B` : 'none', transform: best ? `scale(${1 + 0.05 * crown})` : 'none', zIndex: best ? 2 : 0}}>
+                    <Photo seed={g * 7 + 3} />
                     {best ? <div style={{position: 'absolute', top: 4, left: 4, background: 'rgba(0,0,0,.6)', borderRadius: 8, padding: '2px 4px', fontSize: 12}}>👑</div> : null}
                     <div style={{position: 'absolute', bottom: 4, right: 4}}><Badge on={on} p={sp(f - (selAt + 4 + (g * 2 + i) * 2), {damping: 8, stiffness: 220})} /></div>
                   </div>
@@ -346,12 +350,15 @@ export const PaywallScreen: React.FC<{trialAt: number; tapAt: number}> = ({trial
         <div style={{width: '100%', ...ent(f, 600)}}><GBtn title={trial ? 'Try 3 Days Free  ›' : 'Unlock Now  ›'} f={f} pressAt={tapAt} /></div>
       </div>
       {/* video annotations */}
-      {[{at: 28, until: trialAt - 2, y: 585, t: 'ONE-TIME · NO SUBSCRIPTION'}, {at: trialAt + 2, until: 999, y: 585, t: '3 DAYS FREE'}].map((c, i) => {
+      {[{at: 18, until: trialAt - 2, y: 585, t: 'ONE-TIME · NO SUBSCRIPTION'}, {at: trialAt + 2, until: 999, y: 585, t: '3 DAYS FREE'}].map((c, i) => {
         const p = sp(f - c.at, {damping: 12, stiffness: 160});
         const o = lerp(f, c.until - 6, c.until, 1, 0);
         return f >= c.at ? <div key={i} style={{position: 'absolute', left: 0, right: 0, top: c.y, ...col, alignItems: 'center', opacity: Math.min(1, p) * o, transform: `scale(${0.7 + 0.3 * Math.min(1.1, p)})`, zIndex: 40}}><span style={{background: G.tile, borderRadius: 999, padding: '8px 18px', fontSize: 15, fontWeight: 800, boxShadow: `0 0 30px ${Brand.glow}`}}>{c.t}</span></div> : null;
       })}
       <Tap x={195} y={756} at={tapAt} />
+      <Shock cx={195} cy={756} start={tapAt + 2} max={320} />
+      <Sparkles cx={195} cy={560} start={tapAt + 2} n={32} radius={230} size={22} duration={50} />
+      {f >= tapAt + 6 ? (() => { const ok = sp(f - (tapAt + 6), {damping: 11, stiffness: 150}); return <div style={{position: 'absolute', left: 0, right: 0, top: 330, ...col, alignItems: 'center', zIndex: 50, opacity: Math.min(1, ok), transform: `scale(${0.7 + 0.3 * Math.min(1.1, ok)})`}}><span style={{background: G.tile, borderRadius: 999, padding: '12px 26px', fontSize: 20, fontWeight: 800, boxShadow: `0 0 40px ${Brand.glow}`}}>✓ Premium Unlocked</span></div>; })() : null}
     </Page>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
-import {AbsoluteFill, Easing, interpolate, Sequence, useCurrentFrame} from 'remotion';
-import {Brand, CUE, G, STAGE_LEN} from './theme';
+import {AbsoluteFill, Easing, Img, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
+import {ASSETS, Brand, CUE, G, STAGE_LEN} from './theme';
 import {AllCategoriesScreen, ConfirmScreen, DetailsScreen, DoneScreen, GetStartedScreen, HomeScreen, PaywallScreen, PermissionDialog, ScanningScreen} from './screens';
 import {Comment, FONT, GradText, Logo, Photo, PhoneShell, Rays, Screen, Shock, Sparkles, StatusBar, col, lerp, rw, sp, K} from './ui';
 
@@ -8,8 +8,11 @@ import {Comment, FONT, GradText, Logo, Photo, PhoneShell, Rays, Screen, Shock, S
 const Notification: React.FC = () => {
   const f = useCurrentFrame();
   const p = sp(f - 12, {damping: 11, stiffness: 150});
-  const out = lerp(f, 56, 70, 0, -420, Easing.in(Easing.cubic));
+  const out = lerp(f, 58, 74, 0, -520, Easing.in(Easing.cubic));
   const shake = f > 14 && f < 34 ? Math.sin((f - 14) * 2.2) * 10 * (1 - (f - 14) / 20) : 0;
+  if (ASSETS.storageFull) {
+    return <Img src={staticFile(ASSETS.storageFull)} style={{position: 'absolute', left: 60, top: 520, width: 960, height: 'auto', borderRadius: 40, transform: `translate(${shake}px, ${(1 - p) * -900 + out}px)`, boxShadow: '0 30px 80px rgba(0,0,0,.55)'}} />;
+  }
   return (
     <div style={{position: 'absolute', left: 60, width: 960, top: 560, transform: `translate(${shake}px, ${(1 - p) * -700 + out}px)`, background: 'rgba(70,70,82,.82)', borderRadius: 48, padding: 30, ...rw, gap: 26, alignItems: 'center', fontFamily: FONT, boxShadow: '0 30px 80px rgba(0,0,0,.5)'}}>
       <div style={{width: 110, height: 110, borderRadius: 26, background: 'linear-gradient(160deg,#8e8e93,#5a5a60)', ...col, alignItems: 'center', justifyContent: 'center', fontSize: 64}}>⚙️</div>
@@ -24,7 +27,7 @@ const Notification: React.FC = () => {
 export const S1: React.FC = () => {
   const f = useCurrentFrame();
   const COLS = 4, SZ = 241, GAP = 12;
-  const hops = [{i: 5, at: 128}, {i: 10, at: 142}, {i: 13, at: 156 - 2}];
+  const hops = [{i: 5, at: 130}, {i: 10, at: 146}, {i: 14, at: 162}];
   return (
     <AbsoluteFill>
       <Notification />
@@ -33,7 +36,7 @@ export const S1: React.FC = () => {
         const x = 40 + c * (SZ + GAP), y = 560 + r * (SZ + GAP);
         const p = sp(f - (62 + i * 2), {damping: 12, stiffness: 100});
         const jig = f > 96 ? Math.sin((f + i * 7) * 0.9) * 1.8 : 0;
-        const suck = Easing.in(Easing.cubic)(lerp(f, 150 + (i % 5) * 2, 176, 0, 1));
+        const suck = Easing.in(Easing.cubic)(lerp(f, 160 + (i % 5) * 2, 180, 0, 1));
         const cx = 540 - (x + SZ / 2), cy = 1060 - (y + SZ / 2);
         const kind = i % 7 === 3 ? 'blur' : i % 5 === 1 ? 'shot' : 'photo';
         return (
@@ -85,11 +88,11 @@ const Chip: React.FC<{e: string; t: string; at: number}> = ({e, t, at}) => {
 export const S3: React.FC = () => (
   <AbsoluteFill>
     <Comment name="@mike_tho" text="Wait… it finds my bad photos?! 👀" at={6} top={420} />
-    <Comment name="UnPile" reply text="Yep! Blurry shots, duplicates and even old photos you haven’t opened in ages." at={64} top={780} likes="9.8K" />
+    <Comment name="UnPile" reply text="Yep! Blurry shots, duplicates, and forgotten photos." at={72} top={780} likes="9.8K" />
     <div style={{position: 'absolute', top: 1260, left: 0, right: 0, ...col, alignItems: 'center', gap: 26}}>
-      <Chip e="🌫️" t="Bad quality" at={104} />
-      <Chip e="👯" t="Duplicates" at={116} />
-      <Chip e="🕰️" t="Old & unopened" at={128} />
+      <Chip e="🌫️" t="Bad quality" at={100} />
+      <Chip e="👯" t="Duplicates" at={114} />
+      <Chip e="🕰️" t="Forgotten photos" at={128} />
     </div>
   </AbsoluteFill>
 );
@@ -97,34 +100,35 @@ export const S3: React.FC = () => (
 /* ───────── 4. Privacy ───────── */
 export const S4: React.FC = () => {
   const f = useCurrentFrame();
-  const card = sp(f - 66, {damping: 13});
-  const on = f >= 84;
-  const tg = lerp(f, 84, 92, 0, 1);
+  const card = sp(f - 70, {damping: 13});
+  const on = f >= 88;
+  const tg = lerp(f, 88, 96, 0, 1);
   return (
     <AbsoluteFill>
       <Comment name="@sara.codes" text="But my privacy tho? 😅" at={4} top={400} likes="1.4K" />
-      <Comment name="UnPile" reply text="100% local. No cloud, no account — it even works offline." at={40} top={690} likes="7.2K" />
+      <Comment name="UnPile" reply text="It’s 100% local. Works offline, too." at={58} top={690} likes="7.2K" />
       <div style={{position: 'absolute', left: 60, right: 60, top: 1090, ...rw, alignItems: 'center', gap: 28, background: 'rgba(21,19,31,.5)', border: `2px solid ${Brand.cardBorder}`, borderRadius: 56, padding: 36, fontFamily: FONT, opacity: Math.min(1, card), transform: `translateY(${(1 - card) * 60}px)`}}>
         <div style={{width: 120, height: 120, borderRadius: 40, background: Brand.tileBackground, ...col, alignItems: 'center', justifyContent: 'center'}}>
           <svg width={64} height={64} viewBox="0 0 24 24" fill="none" stroke={Brand.glow} strokeWidth={2} strokeLinejoin="round"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z" /><path d="m9 12 2 2 4-4" strokeLinecap="round" /></svg>
         </div>
         <div style={{...col}}><span style={{fontSize: 52, fontWeight: 700}}>100% On-Device</span><span style={{fontSize: 36, color: Brand.textSecondary, marginTop: 4}}>Your photos never leave your iPhone.</span></div>
       </div>
-      <div style={{position: 'absolute', left: 60, right: 60, top: 1400, ...rw, alignItems: 'center', justifyContent: 'space-between', background: 'rgba(21,19,31,.92)', border: `2px solid ${on ? '#FF9F0A' : Brand.cardBorder}`, borderRadius: 56, padding: '34px 44px', fontFamily: FONT, opacity: Math.min(1, sp(f - 76)), boxShadow: on ? '0 0 50px rgba(255,159,10,.35)' : 'none'}}>
+      <div style={{position: 'absolute', left: 60, right: 60, top: 1400, ...rw, alignItems: 'center', justifyContent: 'space-between', background: 'rgba(21,19,31,.92)', border: `2px solid ${on ? '#FF9F0A' : Brand.cardBorder}`, borderRadius: 56, padding: '34px 44px', fontFamily: FONT, opacity: Math.min(1, sp(f - 78)), boxShadow: on ? '0 0 50px rgba(255,159,10,.35)' : 'none'}}>
         <div style={{...rw, alignItems: 'center', gap: 22, fontSize: 52, fontWeight: 700}}><span style={{width: 84, height: 84, borderRadius: 24, background: '#FF9F0A', ...col, alignItems: 'center', justifyContent: 'center', fontSize: 50}}>✈︎</span>Airplane Mode</div>
         <div style={{width: 130, height: 76, borderRadius: 999, background: on ? '#34C759' : '#3a3a3c', position: 'relative'}}><div style={{position: 'absolute', top: 5, left: 5 + tg * 54, width: 66, height: 66, borderRadius: 999, background: '#fff'}} /></div>
       </div>
-      <div style={{position: 'absolute', top: 1610, left: 0, right: 0, textAlign: 'center', fontFamily: FONT, fontSize: 54, fontWeight: 800, opacity: lerp(f, 96, 106, 0, 1)}}><GradText>Still works. Offline ✓</GradText></div>
+      <div style={{position: 'absolute', top: 1610, left: 0, right: 0, textAlign: 'center', fontFamily: FONT, fontSize: 54, fontWeight: 800, opacity: lerp(f, 100, 108, 0, 1)}}><GradText>Still works. Offline ✓</GradText></div>
     </AbsoluteFill>
   );
 };
 
 /* ───────── Phone stage (camera + screens) ───────── */
 const CAM = [
-  [0, 195, 430, 1.02], [70, 195, 700, 1.3], [130, 195, 430, 1.05], [190, 195, 330, 1.18], [300, 195, 330, 1.2],
-  [326, 195, 260, 1.45], [392, 195, 260, 1.5], [430, 195, 520, 1.2], [462, 340, 360, 1.3], [480, 195, 430, 1.05],
-  [500, 195, 290, 1.3], [580, 195, 430, 1.1], [640, 195, 420, 1.15], [720, 195, 430, 1.0], [748, 195, 700, 1.3],
-  [775, 195, 430, 1.0], [862, 195, 690, 1.3], [885, 195, 330, 1.25], [1000, 195, 430, 1.0], [1060, 195, 560, 1.15], [1150, 195, 430, 1.0],
+  [0, 195, 430, 1.02], [62, 195, 700, 1.3], [118, 195, 430, 1.05], [150, 195, 420, 1.2], [196, 195, 330, 1.18],
+  [318, 195, 330, 1.2], [334, 195, 260, 1.45], [398, 195, 260, 1.5], [420, 195, 500, 1.2], [462, 340, 360, 1.3],
+  [492, 195, 430, 1.05], [506, 195, 290, 1.3], [594, 195, 430, 1.1], [640, 195, 420, 1.15], [706, 195, 430, 1.0],
+  [760, 195, 700, 1.3], [788, 195, 430, 1.0], [830, 195, 690, 1.3], [878, 195, 330, 1.25], [1000, 195, 430, 1.0],
+  [1040, 195, 560, 1.2], [1100, 195, 500, 1.1], [1150, 195, 430, 1.0],
 ];
 const SlideIn: React.FC<{first?: boolean; children: React.ReactNode}> = ({first, children}) => {
   const f = useCurrentFrame();
@@ -149,15 +153,15 @@ export const StageScene: React.FC = () => {
       <div style={{position: 'absolute', left: 230, top: 490, width: 620, height: 1309, transformOrigin: '50% 50%', transform: `translate(${tx}px, ${ty}px) scale(${s}) rotate(${Math.sin(f / 40) * 0.4}deg)`}}>
         <PhoneShell>
           <Screen>
-            <Slot from={0} to={C.permFrom + C.permAllow} first><GetStartedScreen tapAt={C.tapStart} /></Slot>
-            <Slot from={C.scan[0] - 6} to={C.home1 + 14}><ScanningScreen start={14} end={C.scan[1] - C.scan[0] + 6 - 8} /></Slot>
-            <Slot from={C.home1} to={C.all + 14}><HomeScreen count tapSeeAll={452 - C.home1} /></Slot>
-            <Slot from={C.all} to={C.details + 14}><AllCategoriesScreen hl={[20, 40, 60, 80, 100]} /></Slot>
+            <Slot from={0} to={C.scan[0] + 10} first><GetStartedScreen tapAt={C.tapStart} /></Slot>
+            <Slot from={C.scan[0] - 6} to={C.home1 + 14}><ScanningScreen start={14} end={C.scan[1] - C.scan[0] - 2} /></Slot>
+            <Slot from={C.home1} to={C.all + 14}><HomeScreen count tapSeeAll={C.tapSeeAll - C.home1} /></Slot>
+            <Slot from={C.all} to={C.details + 14}><AllCategoriesScreen hl={[18, 40, 62, 84, 106]} /></Slot>
             <Slot from={C.details} to={C.home2 + 14}><DetailsScreen selAt={46} /></Slot>
-            <Slot from={C.home2} to={C.confirm + 14}><HomeScreen tapReview={748 - C.home2} /></Slot>
-            <Slot from={C.confirm} to={C.done + 14}><ConfirmScreen tapAt={862 - C.confirm} /></Slot>
+            <Slot from={C.home2} to={C.confirm + 14}><HomeScreen tapReview={C.tapReview - C.home2} /></Slot>
+            <Slot from={C.confirm} to={C.done + 14}><ConfirmScreen tapAt={C.tapDelete - C.confirm} /></Slot>
             <Slot from={C.done} to={C.pay + 14}><DoneScreen /></Slot>
-            <Slot from={C.pay} to={STAGE_LEN}><PaywallScreen trialAt={78} tapAt={1110 - C.pay} /></Slot>
+            <Slot from={C.pay} to={STAGE_LEN}><PaywallScreen trialAt={50} tapAt={C.tapBuy - C.pay} /></Slot>
             <Sequence from={C.permFrom} durationInFrames={C.permAllow - C.permFrom + 16}><PermissionDialog from={0} allowAt={C.permAllow - C.permFrom} /></Sequence>
             <StatusBar />
           </Screen>

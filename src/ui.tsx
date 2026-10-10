@@ -24,8 +24,8 @@ export const Bg: React.FC = () => {
   const f = useCurrentFrame();
   return (
     <AbsoluteFill style={{background: Brand.appBackground}}>
-      <div style={{position: 'absolute', width: 1100, height: 1100, borderRadius: '50%', left: -380 + Math.sin(f / 70) * 120, top: 80 + Math.cos(f / 80) * 120, background: Brand.primary, filter: 'blur(260px)', opacity: 0.4}} />
-      <div style={{position: 'absolute', width: 900, height: 900, borderRadius: '50%', right: -320 + Math.cos(f / 75) * 100, bottom: -160 + Math.sin(f / 65) * 120, background: Brand.primaryLight, filter: 'blur(260px)', opacity: 0.25}} />
+      <div style={{position: 'absolute', width: 1500, height: 1500, left: -650 + Math.sin(f / 70) * 120, top: -200 + Math.cos(f / 80) * 120, background: `radial-gradient(circle, ${Brand.primary}70 0%, transparent 62%)`}} />
+      <div style={{position: 'absolute', width: 1300, height: 1300, right: -560 + Math.cos(f / 75) * 100, bottom: -400 + Math.sin(f / 65) * 120, background: `radial-gradient(circle, ${Brand.primaryLight}44 0%, transparent 62%)`}} />
     </AbsoluteFill>
   );
 };
