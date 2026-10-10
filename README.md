@@ -1,54 +1,14 @@
-# Remotion video
+# UnPile story video (Remotion) — 1080x1920, ~59.7s
 
-<p align="center">
-  <a href="https://github.com/remotion-dev/logo">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-dark.apng">
-      <img alt="Animated Remotion Logo" src="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-light.gif">
-    </picture>
-  </a>
-</p>
+Setup:
+  npx create-video@latest --blank        (TypeScript)
+  cd <project> && npx remotion add @remotion/transitions @remotion/google-fonts
+  replace src/ with this src/ ; npm run dev ; composition id: UnpileStory
+  npx remotion render UnpileStory out/unpile.mp4
 
-Welcome to your Remotion project!
+Linux render machines need emoji fonts:  sudo apt install fonts-noto-color-emoji
 
-## Commands
-
-**Install Dependencies**
-
-```console
-npm i --loglevel=error
-```
-
-**Start Preview**
-
-```console
-npm run dev
-```
-
-**Render video**
-
-```console
-npx remotion render
-```
-
-**Upgrade Remotion**
-
-```console
-npx remotion upgrade
-```
-
-## Docs
-
-Get started with Remotion by reading the [fundamentals page](https://www.remotion.dev/docs/the-fundamentals).
-
-## Help
-
-We provide help on our [Discord server](https://discord.gg/6VzzNDwUwV).
-
-## Issues
-
-Found an issue with Remotion? [File an issue here](https://github.com/remotion-dev/remotion/issues/new).
-
-## License
-
-Note that for some entities a company license is needed. [Read the terms here](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).
+Real assets (optional): put PNGs in /public and set them in src/theme.ts -> ASSETS (logo + 5 category icons).
+Audio: put voiceover.mp3, music.mp3, sfx/*.mp3 in /public, then set AUDIO flags in src/theme.ts.
+SFX names: notify haptic pop tick suck impact sparkle toggle success whoosh tap scan trash
+Everything (timings, captions, SFX cues) is in src/theme.ts.

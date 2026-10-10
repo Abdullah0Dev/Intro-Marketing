@@ -1,0 +1,20 @@
+{
+  "name": "unpile-video",
+  "private": true,
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts UnpileStory out/unpile.mp4",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.532",
+    "@remotion/google-fonts": "^4.0.532",
+    "@remotion/transitions": "^4.0.532",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.532",
+    "typescript": "^7.0.2"
+  }
+}

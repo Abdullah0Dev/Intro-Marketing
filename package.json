@@ -7,10 +7,17 @@
   "private": true,
   "dependencies": {
     "@remotion/cli": "4.0.532",
+    "@remotion/google-fonts": "^4.0.532",
+    "@remotion/media": "^4.0.532",
+    "@remotion/media-utils": "^4.0.532",
+    "@remotion/player": "^4.0.532",
+    "@remotion/tailwind-v4": "4.0.532",
+    "@remotion/transitions": "^4.0.532",
+    "@remotion/web-renderer": "^4.0.532",
+    "lucide-react": "^1.52.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "remotion": "4.0.532",
-    "@remotion/tailwind-v4": "4.0.532",
     "tailwindcss": "4.0.0"
   },
   "devDependencies": {
@@ -25,6 +32,7 @@
     "dev": "remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
+    "render": "remotion render src/index.ts UnpileStory out/unpile.mp4",
     "lint": "eslint src && tsc"
   },
   "sideEffects": [
